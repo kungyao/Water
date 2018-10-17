@@ -7,11 +7,10 @@ public class PlayerController : MonoBehaviour
     public float _moveSpeed = 0;
     public float _jumpForce = 0;
     public LayerMask _layer;            /**floor layer*/
-    public GameObject _role;
 
     private Animator _animator;         /**player animator*/
     private Rigidbody2D _rigid2D;       /**player rigidbody*/
-    //private Animator animator;
+
     private bool _isGround = false;
     private bool _faceRight = true;
     public bool FaceRight { get { return _faceRight; } }
@@ -29,18 +28,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //init Luquid State
-        _role.GetComponent<SpriteRenderer>().color = new Color(0, 0.196f, 1.0f, 0.6274f);
+        this.GetComponent<SpriteRenderer>().color = new Color(0, 0.196f, 1.0f, 0.6274f);
         _moveSpeed = 4;
         _jumpForce = 5.0f;
 
-        _animator = this.GetComponentInChildren<Animator>();
+        _animator = this.GetComponent<Animator>();
         _rigid2D = this.GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
         Move();
-        //Switch();
+        Switch();
     }
 
     private void FixedUpdate()
@@ -54,19 +53,19 @@ public class PlayerController : MonoBehaviour
         _currentRole = role;
         if(_currentRole == (int)Role.Liquid)
         {
-            _role.GetComponent<SpriteRenderer>().color = new Color(0,0.196f,1.0f,0.6274f);
+            this.GetComponent<SpriteRenderer>().color = new Color(0,0.196f,1.0f,0.6274f);
             _moveSpeed = 5;
             _jumpForce = 5.0f;
         }
         else if(_currentRole == (int)Role.Solid)
         {
-            _role.GetComponent<SpriteRenderer>().color = new Color(0f, 1.0f, 0f, 0.7843f);
+            this.GetComponent<SpriteRenderer>().color = new Color(0f, 1.0f, 0f, 0.7843f);
             _moveSpeed = 7;
             _jumpForce = 4.0f;
         }
         else if (_currentRole == (int)Role.Vapor)
         {
-            _role.GetComponent<SpriteRenderer>().color = new Color(0.3529f, 0.3529f, 0.3529f, 0.3529f);
+            this.GetComponent<SpriteRenderer>().color = new Color(0.3529f, 0.3529f, 0.3529f, 0.3529f);
             _moveSpeed = 3;
             _jumpForce = 9.5f;
         }
@@ -87,26 +86,16 @@ public class PlayerController : MonoBehaviour
         Flip(h);
     }
 
-    /*private void Switch()
+    private void Switch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            Switch(0);
+            ChangeRole((int)Role.Liquid);
         if (Input.GetKeyDown(KeyCode.Alpha2))
-            Switch(1);
+            ChangeRole((int)Role.Solid);
         if (Input.GetKeyDown(KeyCode.Alpha3))
-            Switch(2);
-    }*/
+            ChangeRole((int)Role.Vapor);
+    }
 
-    /*private void Switch(int key)
-    {
-        if (_currentPhase == key)
-            return;
-        _currentPhase = key;
-        _charPhase[key].SetActive(true);
-        for (int i = 0; i < 3; i++)
-            if (i != key)
-                _charPhase[i].SetActive(false);
-    }*/
 
     private void GroundCheck()
     {

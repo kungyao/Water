@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour {
 
-    public GameObject _roleManager;
     public GameObject _role;
-    public GameObject _Item;
+    public GameObject _item;
+    public GameObject _weapon;
 
     private PlayerController _roleController;
     private int _roleId;
@@ -14,7 +14,7 @@ public class Skill : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        _roleController = _roleManager.GetComponent<PlayerController>();
+        _roleController = _role.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -25,6 +25,24 @@ public class Skill : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Z))
         {
             PutCube();
+            ShootSaw();
+        }
+    }
+    //Liquid Skill
+    void ShootSaw()
+    {
+        if (_roleId != 0) return;
+        if (_faceRight)
+        {
+            GameObject temp = Instantiate(_weapon, _role.transform.position + new Vector3(0.6f, 0, 0), Quaternion.identity) as GameObject;
+            temp.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 10, ForceMode2D.Impulse);
+            Destroy(temp, 5.0f);
+        }
+        else
+        {
+            GameObject temp = Instantiate(_weapon, _role.transform.position + new Vector3(-0.6f, 0, 0), Quaternion.identity) as GameObject;
+            temp.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
+            Destroy(temp, 5.0f);
         }
     }
 
@@ -38,12 +56,12 @@ public class Skill : MonoBehaviour {
 
         if (_faceRight)
         {
-            GameObject temp = Instantiate(_Item, _role.transform.position + new Vector3(0.6f, 0, 0), Quaternion.identity) as GameObject;
+            GameObject temp = Instantiate(_item, _role.transform.position + new Vector3(0.6f, 0, 0), Quaternion.identity) as GameObject;
             Destroy(temp, 10.0f);
         }
         else
         {
-            GameObject temp = Instantiate(_Item, _role.transform.position + new Vector3(-0.6f, 0, 0), Quaternion.identity) as GameObject;
+            GameObject temp = Instantiate(_item, _role.transform.position + new Vector3(-0.6f, 0, 0), Quaternion.identity) as GameObject;
             Destroy(temp, 10.0f);
         }
     }
