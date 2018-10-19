@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private int _currentRole = 0;
     public int CurrentRole { get { return _currentRole; } }
 
+    public Canvas _playerUI;
+
     private enum Role
     {
         Liquid,
@@ -137,12 +139,14 @@ public class PlayerController : MonoBehaviour
         {
             _faceRight = false;
             transform.localScale = new Vector3(-1, 1, 1);
+            _playerUI.GetComponent<RectTransform>().localScale = new Vector3(-1, 1, 1);
             //transform.Rotate(transform.up, 180);
         }
         else if(!_faceRight && x > 0)
         {
             _faceRight = true;
             transform.localScale = new Vector3(1, 1, 1);
+            _playerUI.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             //transform.Rotate(transform.up, 180);
         }
     }

@@ -4,20 +4,11 @@ using UnityEngine;
 
 public class Test : MonoBehaviour {
 
-    public int id;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.tag == "Player")
-            collision.GetComponent<PlayerController>().ChangeRole(id);
-            //collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 10), ForceMode2D.Force);
+        if(other.tag == "Player")
+        {
+            other.GetComponent<HP>().Damage(30);
+        }
     }
 }
