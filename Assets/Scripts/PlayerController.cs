@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator _animator;         /**player animator*/
     private Rigidbody2D _rigid2D;       /**player rigidbody*/
+    //private CapsuleCollider2D _collider;
 
     private bool _isGround = false;
     private bool _faceRight = true;
@@ -19,12 +20,30 @@ public class PlayerController : MonoBehaviour
     public int CurrentRole { get { return _currentRole; } }
 
     public Canvas _playerUI;
+    private List<int> _items = new List<int>();
 
-    private enum Role
+    // Item prefab
+    public GameObject _fireball;
+    public GameObject _stoneMagic;
+    public GameObject _poison;
+
+    //PlayerState
+    public bool _isPoisonous = false;
+    public bool _isStone = false;
+
+    public enum Item
     {
-        Liquid,
-        Solid,
-        Vapor
+        FireBall,
+        BigAid,
+        MidAid,
+        SmallAid,
+        Poison,
+        FireFloor,
+        BigBomb,
+        Stone,
+        RestoreMagic,
+        Accelerate,
+        MineTrap
     }
 
     void Start()
@@ -32,8 +51,10 @@ public class PlayerController : MonoBehaviour
         //init Luquid State
         this.GetComponent<SpriteRenderer>().color = new Color(0, 0.196f, 1.0f, 0.6274f);
         _moveSpeed = 4;
-        _jumpForce = 5.0f;
+        _jumpForce = 10.0f;
 
+        //_collider = this.GetComponent<CapsuleCollider2D>();
+        
         _animator = this.GetComponent<Animator>();
         _rigid2D = this.GetComponent<Rigidbody2D>();
     }
@@ -41,7 +62,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        Switch();
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            UseItem(0);
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+            UseItem(1);
+        //Switch();
     }
 
     private void FixedUpdate()
@@ -50,7 +75,7 @@ public class PlayerController : MonoBehaviour
         FallCheck();
     }
 
-    public void ChangeRole(int role)
+    /*public void ChangeRole(int role)
     {
         _currentRole = role;
         if(_currentRole == (int)Role.Liquid)
@@ -72,32 +97,24 @@ public class PlayerController : MonoBehaviour
             _jumpForce = 9.5f;
         }
     }
-
+    */
     private void Move()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        transform.Translate(transform.right * Time.deltaTime * h * _moveSpeed, Space.World);
-        _animator.SetFloat("Speed", Mathf.Abs(h));
-        _animator.SetBool("isGround", _isGround);
-        if (Input.GetButtonDown("Jump") && _isGround) 
+        if (!_isStone)
         {
-            _animator.SetBool("isJumpUp", true);
-            this.GetComponent<Rigidbody2D>().AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+            transform.Translate(transform.right * Time.deltaTime * h * _moveSpeed, Space.World);
+            _animator.SetFloat("Speed", Mathf.Abs(h));
+            _animator.SetBool("isGround", _isGround);
+            if (Input.GetButtonDown("Jump") && _isGround)
+            {
+                _animator.SetBool("isJumpUp", true);
+                this.GetComponent<Rigidbody2D>().AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
+            }
+            Flip(h);
         }
-        Flip(h);
     }
-
-    private void Switch()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            ChangeRole((int)Role.Liquid);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            ChangeRole((int)Role.Solid);
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            ChangeRole((int)Role.Vapor);
-    }
-
 
     private void GroundCheck()
     {
@@ -105,6 +122,7 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = -transform.up;
         float distance = 0.5f;
         RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, _layer);
+        //RaycastHit2D hit = Physics2D.CapsuleCast(position, _collider.size, CapsuleDirection2D.Vertical, 0, direction, distance, _layer);
         if (hit.collider)
         {
             _isGround = true;
@@ -148,6 +166,146 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
             _playerUI.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             //transform.Rotate(transform.up, 180);
+        }
+    }
+
+    //Item Part
+    public bool CheckItemDestroy()
+    {
+        if (_items.Count >= 2)
+            return false;
+        return true;
+    }
+    public void AddItem(int _itemId)
+    {
+        _items.Add(_itemId);
+    }
+    public void UseItem(int _useId)
+    {
+        if (_useId > _items.Count - 1)
+        {
+            return;
+        }
+        //Item Use
+        int itemId = _items[_useId];
+
+        if (itemId == (int)Item.FireBall)
+        {
+            if (_faceRight)
+            {
+                GameObject temp = Instantiate(_fireball, this.transform.position + new Vector3(1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.transform.localScale = new Vector3(-0.4f, 0.4f, 1);
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 10, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GameObject temp = Instantiate(_fireball, this.transform.position + new Vector3(-1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
+            }
+        }
+        else if (itemId == (int)Item.BigAid)
+        {
+            this.GetComponent<HP>().Recover(70);
+        }
+        else if (itemId == (int)Item.MidAid)
+        {
+            this.GetComponent<HP>().Recover(40);
+        }
+        else if (itemId == (int)Item.SmallAid)
+        {
+            this.GetComponent<HP>().Recover(10);
+        }
+        else if (itemId == (int)Item.Poison)
+        {
+            if (_faceRight)
+            {
+                GameObject temp = Instantiate(_poison, this.transform.position + new Vector3(1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 10, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GameObject temp = Instantiate(_poison, this.transform.position + new Vector3(-1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
+            }
+        }
+        else if (itemId == (int)Item.FireFloor)
+        {
+            
+
+        }
+        else if(itemId == (int)Item.BigBomb)
+        {
+
+        }
+        else if(itemId == (int)Item.Stone)
+        {
+            if (_faceRight)
+            {
+                GameObject temp = Instantiate(_stoneMagic, this.transform.position + new Vector3(1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 10, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GameObject temp = Instantiate(_stoneMagic, this.transform.position + new Vector3(-1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
+            }
+        }
+        else if (itemId == (int)Item.RestoreMagic)
+        {
+            StartCoroutine(RestoreMagic());
+        }
+        else if (itemId == (int)Item.Accelerate)
+        {
+            StartCoroutine(AccelerateMagic());
+        }
+        else if (itemId == (int)Item.MineTrap)
+        {
+
+        }
+
+        _items.RemoveAt(_useId);
+    }
+
+    //PlayerState
+    public void BeStone()
+    {
+        StartCoroutine(IsStone());
+    }
+
+    public void BePoisonous()
+    {
+        StartCoroutine(IsPoisonous());
+    }
+
+    IEnumerator RestoreMagic()
+    {
+        for(int i = 0; i < 5; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            this.GetComponent<HP>().Recover(10);
+        }
+    }
+
+    IEnumerator AccelerateMagic()
+    {
+        this._moveSpeed *= 1.2f;
+        yield return new WaitForSeconds(5f);
+        this._moveSpeed /= 1.2f;
+    }
+
+    IEnumerator IsStone()
+    {
+        _isStone = true;
+        yield return new WaitForSeconds(3f);
+        _isStone = false;
+    }
+
+    IEnumerator IsPoisonous()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            this.GetComponent<HP>().Damage(5);
         }
     }
 }

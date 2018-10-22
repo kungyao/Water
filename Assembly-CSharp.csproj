@@ -66,10 +66,14 @@
     <Compile Include="Assets\2D SpritePack\Demo\Scripts\Portal.cs" />
     <Compile Include="Assets\2D SpritePack\Demo\Scripts\RestartLevel.cs" />
     <Compile Include="Assets\2D SpritePack\Demo\Scripts\Saw.cs" />
+    <Compile Include="Assets\Scripts\FireBall.cs" />
     <Compile Include="Assets\Scripts\HP.cs" />
+    <Compile Include="Assets\Scripts\PickSystem.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Poison.cs" />
     <Compile Include="Assets\Scripts\Skill.cs" />
-    <Compile Include="Assets\Scripts\Test.cs" />
+    <Compile Include="Assets\Scripts\Stone.cs" />
+    <None Include="Assets\Textures\Tool\trap\Sci-Fi Gateway\README.txt" />
     <None Include="Assets\Free Platform Game Assets\Readme.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/USER/Desktop/新增資料夾/Water/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

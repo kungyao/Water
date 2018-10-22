@@ -45,10 +45,10 @@ public class HP : MonoBehaviour {
     {
         while (true)
         {
-            this.Damage(1);
             if (_isDied)
                 break;
             yield return new WaitForSeconds(1f);
+            this.Damage(1);
         }
     }
 }
