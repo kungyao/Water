@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4320265400965134}
   - component: {fileID: 212573392068400440}
-  - component: {fileID: 60051020414223360}
+  - component: {fileID: 70743036444535282}
   - component: {fileID: 114592401554889446}
   m_Layer: 0
   m_Name: Pick_Poisonous
@@ -42,8 +42,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60051020414223360
-PolygonCollider2D:
+--- !u!70 &70743036444535282
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -51,55 +51,12 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
-    newSize: {x: 2.56, y: 2.56}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.78, y: -0.61}
-      - {x: 0.81, y: -0.39}
-      - {x: 0.79999995, y: -0.08}
-      - {x: 0.82, y: 0.089999996}
-      - {x: 1.13, y: 0.37}
-      - {x: 1.14, y: 0.42999998}
-      - {x: 1.14, y: 0.78999996}
-      - {x: 1.0699999, y: 0.90999997}
-      - {x: 0.97999996, y: 1.01}
-      - {x: 0.89, y: 1.03}
-      - {x: 0.7, y: 1.03}
-      - {x: 0.59999996, y: 1.02}
-      - {x: 0.51, y: 0.97999996}
-      - {x: 0.41, y: 0.9}
-      - {x: 0.32999998, y: 0.81}
-      - {x: 0.21, y: 0.76}
-      - {x: 0.16, y: 0.68}
-      - {x: -0.26999998, y: 0.65999997}
-      - {x: -0.47, y: 0.61}
-      - {x: -0.61, y: 0.5}
-      - {x: -0.71999997, y: 0.38}
-      - {x: -0.81, y: 0.25}
-      - {x: -0.89, y: 0.03}
-      - {x: -0.89, y: -0.31}
-      - {x: -0.84, y: -0.48}
-      - {x: -0.78999996, y: -0.59}
-      - {x: -0.7, y: -0.72999996}
-      - {x: -0.55, y: -0.89}
-      - {x: -0.31, y: -1.04}
-      - {x: -0.13, y: -1.06}
-      - {x: 0.14999999, y: -1.06}
-      - {x: 0.38, y: -1}
-      - {x: 0.56, y: -0.88}
-      - {x: 0.65999997, y: -0.78999996}
+  m_Offset: {x: 0.08500973, y: -0.078027844}
+  m_Size: {x: 1.9073617, y: 1.9073617}
+  m_Direction: 0
 --- !u!114 &114592401554889446
 MonoBehaviour:
   m_ObjectHideFlags: 1
