@@ -32,10 +32,15 @@ public class PlayerController : MonoBehaviour
     public bool _isStone = false;
 
     //UiManager
-    public int userId; // 0 1 2 3
+    //public int _userId; // 0 1 2 3
     public GameObject _playerInterface;
     private UIManager _playerInterfaceManager;
 
+    //Manipulate keycode
+    public KeyCode jump;
+    public KeyCode props1;
+    public KeyCode props2;
+    public string moveAxis;
 
     public enum Item
     {
@@ -51,24 +56,24 @@ public class PlayerController : MonoBehaviour
         Accelerate,
         MineTrap
     }
+
     public void Init(int userId , Color color)
     {
-        //init Luquid State
+        //init color and movespeend and jumpspeed
         this.GetComponent<SpriteRenderer>().color = color;
         _moveSpeed = 4;
-        _jumpForce = 10.0f;
+        _jumpForce = 5.0f;
+        //_userId = userId;
 
-        //_collider = this.GetComponent<CapsuleCollider2D>();
         //Initial playerInterface Info
         _playerInterface.GetComponent<RectTransform>().localPosition = new Vector2(-645 + userId * 485, -513);
-        
-        
         _playerInterfaceManager._title.text = "P" + (userId + 1).ToString();
-       
+        SetKeycode(userId);
+        
+        //_collider = this.GetComponent<CapsuleCollider2D>();
 
-
-       // _animator = this.GetComponent<Animator>();
-       // _rigid2D = this.GetComponent<Rigidbody2D>();
+        // _animator = this.GetComponent<Animator>();
+        // _rigid2D = this.GetComponent<Rigidbody2D>();
     }
     void Awake()
     {
@@ -82,9 +87,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(Input.GetKeyDown(props1))
             UseItem(0);
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        else if(Input.GetKeyDown(props2))
             UseItem(1);
         //Switch();
     }
@@ -95,39 +100,16 @@ public class PlayerController : MonoBehaviour
         FallCheck();
     }
 
-    /*public void ChangeRole(int role)
-    {
-        _currentRole = role;
-        if(_currentRole == (int)Role.Liquid)
-        {
-            this.GetComponent<SpriteRenderer>().color = new Color(0,0.196f,1.0f,0.6274f);
-            _moveSpeed = 5;
-            _jumpForce = 5.0f;
-        }
-        else if(_currentRole == (int)Role.Solid)
-        {
-            this.GetComponent<SpriteRenderer>().color = new Color(0f, 1.0f, 0f, 0.7843f);
-            _moveSpeed = 7;
-            _jumpForce = 4.0f;
-        }
-        else if (_currentRole == (int)Role.Vapor)
-        {
-            this.GetComponent<SpriteRenderer>().color = new Color(0.3529f, 0.3529f, 0.3529f, 0.3529f);
-            _moveSpeed = 3;
-            _jumpForce = 9.5f;
-        }
-    }
-    */
     private void Move()
     {
         if (!_isStone)
         {
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            float h = Input.GetAxis(moveAxis);
+            //float v = Input.GetAxis("Vertical");
             transform.Translate(transform.right * Time.deltaTime * h * _moveSpeed, Space.World);
             _animator.SetFloat("Speed", Mathf.Abs(h));
             _animator.SetBool("isGround", _isGround);
-            if (Input.GetButtonDown("Jump") && _isGround)
+            if (Input.GetKeyDown(jump) && _isGround)
             {
                 _animator.SetBool("isJumpUp", true);
                 this.GetComponent<Rigidbody2D>().AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
@@ -292,7 +274,24 @@ public class PlayerController : MonoBehaviour
         _items.RemoveAt(_useId);
         _playerInterfaceManager.UpdatePros();
     }
-
+    //Set Keycode
+    private void SetKeycode(int userId)
+    {
+        if (userId == 0)
+        {
+            moveAxis = "Horizontal";
+            jump = KeyCode.W;
+            props1 = KeyCode.K;
+            props2 = KeyCode.L;
+        }
+        else if (userId == 1)
+        {
+            moveAxis = "2p";
+            jump = KeyCode.UpArrow;
+            props1 = KeyCode.Keypad2;
+            props2 = KeyCode.Keypad3;
+        }
+    }
 
 
 
