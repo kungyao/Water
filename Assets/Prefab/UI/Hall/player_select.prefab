@@ -577,11 +577,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skill:
-  - {fileID: 2800000, guid: 1385b5f4adad59f44a3f447074a4ed7b, type: 3}
-  - {fileID: 2800000, guid: 7077ad2e453c4c64fbde92ea63252313, type: 3}
-  - {fileID: 2800000, guid: c34664bbeb4e7454890b1703ac82f162, type: 3}
-  - {fileID: 2800000, guid: 3a77855ce594bb0458246787c2088a5f, type: 3}
-  - {fileID: 2800000, guid: 69b9968f0272ed04f8100b5f6c89f669, type: 3}
+  - {fileID: 2800000, guid: eb465ebf2543bf249b94798442248ae8, type: 3}
+  - {fileID: 2800000, guid: ba650c03ed6215c4989131e8c929768a, type: 3}
+  - {fileID: 2800000, guid: 96bdb44455bc2b243a3e49e578b38bc7, type: 3}
+  - {fileID: 2800000, guid: 5f265fadebfc5994db071c8397fdf91a, type: 3}
+  - {fileID: 2800000, guid: c3f603e2ffc40f94cac1fef202ac85de, type: 3}
 --- !u!114 &114407738453647246
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -51,23 +51,30 @@ public class PlayerController : MonoBehaviour
         Accelerate,
         MineTrap
     }
-
-    void Start()
+    public void Init(int userId , Color color)
     {
         //init Luquid State
-        this.GetComponent<SpriteRenderer>().color = new Color(0, 0.196f, 1.0f, 0.6274f);
+        this.GetComponent<SpriteRenderer>().color = color;
         _moveSpeed = 4;
         _jumpForce = 10.0f;
 
         //_collider = this.GetComponent<CapsuleCollider2D>();
         //Initial playerInterface Info
         _playerInterface.GetComponent<RectTransform>().localPosition = new Vector2(-645 + userId * 485, -513);
+        
+        
+        _playerInterfaceManager._title.text = "P" + (userId + 1).ToString();
+       
+
+
+       // _animator = this.GetComponent<Animator>();
+       // _rigid2D = this.GetComponent<Rigidbody2D>();
+    }
+    void Awake()
+    {
         _playerInterfaceManager = _playerInterface.GetComponent<UIManager>();
         _playerInterfaceManager.Init();
-        _playerInterfaceManager._title.text = "P" + (userId + 1).ToString();
         _playerInterfaceManager.UpdatePros();
-
-
         _animator = this.GetComponent<Animator>();
         _rigid2D = this.GetComponent<Rigidbody2D>();
     }

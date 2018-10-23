@@ -4,97 +4,14 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public struct player_Info
-{
-    private int _player_ID;
-    public int Player_ID
-    {
-        get
-        {
-            return _player_ID;
-        }
-
-        set
-        {
-            _player_ID = value;
-        }
-    }
-
-    private Color _color;
-    public Color Color
-    {
-        get
-        {
-            return _color;
-        }
-
-        set
-        {
-            _color = value;
-        }
-    }
-
-    private int _skill;
-    public int Skill
-    {
-        get
-        {
-            return _skill;
-        }
-
-        set
-        {
-            _skill = value;
-        }
-    }
-
-    public player_Info(int id, Color c,int num)
-    {
-        _player_ID = id;
-        _color = c;
-        _skill = num;
-    }
-}
-public class Info{
-    public Info(int p, player_Info[] data) {
-        People = p;
-        Player_Infos = new player_Info[p];
-        Player_Infos = data;
-    }
-
-    private int _people;
-    public int People
-    {
-        get
-        {
-            return _people;
-        }
-
-        set
-        {
-            _people = value;
-        }
-    }
-
-    private player_Info[] _player_Infos;
-    public player_Info[] Player_Infos
-    {
-        get
-        {
-            return _player_Infos;
-        }
-
-        set
-        {
-            _player_Infos = value;
-        }
-    }
-}
-
 public class PlayerPeople : MonoBehaviour {
+
     public GameObject people;
     public GameObject select;
     private int player;
+
+    
+
     void CallSelect() {
         select.SetActive(true);
         people.SetActive(false);
@@ -118,10 +35,10 @@ public class PlayerPeople : MonoBehaviour {
         CallPeople();
     }
     public void Btn_Go() {
-        player_Info[] data = new player_Info[player];
+        Info._player_Infos = new player_Info[player];
         for (int i=0; i < player; i++)
-            data[i] = select.transform.GetChild(i).GetComponent<PlayerSelect>().Data;
-        Info info = new Info(player, data);
+            Info._player_Infos[i] = select.transform.GetChild(i).GetComponent<PlayerSelect>().Data;
+        Info._people = player;
         SceneManager.LoadScene(1);
     }
 
