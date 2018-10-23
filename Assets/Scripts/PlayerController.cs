@@ -31,6 +31,12 @@ public class PlayerController : MonoBehaviour
     public bool _isPoisonous = false;
     public bool _isStone = false;
 
+    //UiManager
+    public int userId; // 0 1 2 3
+    public GameObject _playerInterface;
+    private UIManager _playerInterfaceManager;
+
+
     public enum Item
     {
         FireBall,
@@ -54,7 +60,14 @@ public class PlayerController : MonoBehaviour
         _jumpForce = 10.0f;
 
         //_collider = this.GetComponent<CapsuleCollider2D>();
-        
+        //Initial playerInterface Info
+        _playerInterface.GetComponent<RectTransform>().localPosition = new Vector2(-645 + userId * 485, -513);
+        _playerInterfaceManager = _playerInterface.GetComponent<UIManager>();
+        _playerInterfaceManager.Init();
+        _playerInterfaceManager._title.text = "P" + (userId + 1).ToString();
+        _playerInterfaceManager.UpdatePros();
+
+
         _animator = this.GetComponent<Animator>();
         _rigid2D = this.GetComponent<Rigidbody2D>();
     }
@@ -170,6 +183,10 @@ public class PlayerController : MonoBehaviour
     }
 
     //Item Part
+    public List<int> getProps()
+    {
+        return _items;
+    }
     public bool CheckItemDestroy()
     {
         if (_items.Count >= 2)
@@ -179,6 +196,8 @@ public class PlayerController : MonoBehaviour
     public void AddItem(int _itemId)
     {
         _items.Add(_itemId);
+        _playerInterfaceManager.UpdatePros();
+        
     }
     public void UseItem(int _useId)
     {
@@ -264,7 +283,11 @@ public class PlayerController : MonoBehaviour
         }
 
         _items.RemoveAt(_useId);
+        _playerInterfaceManager.UpdatePros();
     }
+
+
+
 
     //PlayerState
     public void BeStone()
