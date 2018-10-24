@@ -61,3 +61,8 @@ public static class Info {
     public static player_Info[] _player_Infos;
 
 }
+
+public static class Score {
+
+
+}

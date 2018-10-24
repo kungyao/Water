@@ -9,12 +9,7 @@ public class RandomProps : MonoBehaviour
     public GameObject[] Props;//所有道具
     public float High = 0.5f;//道具出現離地板高度
     public float TimeGap = 5;//多久一次
-    // Use this for initialization
-    void Start()
-    {
 
-
-    }
     // Update is called once per frame
     void Update()
     {

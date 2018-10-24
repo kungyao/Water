@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(WaitCD(30));
         }
         else {
-            StartCoroutine(AccelerateMagic());
+            StartCoroutine(AccelerateMagic(2));
             StartCoroutine(WaitCD(20));
         }
     }
@@ -311,7 +311,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (itemId == (int)Item.Accelerate)
         {
-            StartCoroutine(AccelerateMagic());
+            StartCoroutine(AccelerateMagic(1.5f));
         }
         else if (itemId == (int)Item.MineTrap)
         {
@@ -365,11 +365,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator AccelerateMagic()
+    IEnumerator AccelerateMagic(float s)
     {
-        this._moveSpeed *= 1.2f;
+        this._moveSpeed *= s;
         yield return new WaitForSeconds(5f);
-        this._moveSpeed /= 1.2f;
+        this._moveSpeed /= s;
     }
 
     IEnumerator WaitCD(int t) {
