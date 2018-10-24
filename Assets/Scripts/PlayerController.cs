@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class PlayerController : MonoBehaviour
     public Canvas _playerUI;
     private List<int> _items = new List<int>();
 
+    // Skill Textures
+    private int _skill_ID = 0;
+    private bool _isCD = false;
+    public Texture[] _skill = new Texture[6];
+
     // Item prefab
     public GameObject _fireball;
     public GameObject _stoneMagic;
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public KeyCode jump;
     public KeyCode props1;
     public KeyCode props2;
+    public KeyCode skill;
     public string moveAxis;
 
     public enum Item
@@ -57,10 +64,12 @@ public class PlayerController : MonoBehaviour
         MineTrap
     }
 
-    public void Init(int userId , Color color)
+    public void Init(int userId , player_Info player)
     {
         //init color and movespeend and jumpspeed
-        this.GetComponent<SpriteRenderer>().color = color;
+        this.GetComponent<SpriteRenderer>().color = player.Color;
+        _skill_ID = player.Skill;
+        this.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<RawImage>().texture = _skill[_skill_ID];
         _moveSpeed = 4;
         _jumpForce = 5.0f;
         //_userId = userId;
@@ -87,10 +96,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        if(Input.GetKeyDown(props1))
+        if (Input.GetKeyDown(props1))
             UseItem(0);
-        else if(Input.GetKeyDown(props2))
+        else if (Input.GetKeyDown(props2))
             UseItem(1);
+        else if (Input.GetKeyDown(skill) && !_isCD)
+            UseSkill(this._skill_ID);
         //Switch();
     }
 
@@ -168,6 +179,42 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
             _playerUI.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             //transform.Rotate(transform.up, 180);
+        }
+    }
+
+    // Skill Part
+    public void UseSkill(int ID) {
+        if (ID == 0) {
+            this.GetComponent<HP>().Recover(50);
+            StartCoroutine(WaitCD(40));
+        }
+        else if (ID == 1) {
+            if (_faceRight)
+            {
+                GameObject temp = Instantiate(_fireball, this.transform.position + new Vector3(1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.transform.localScale = new Vector3(-0.4f, 0.4f, 1);
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 10, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GameObject temp = Instantiate(_fireball, this.transform.position + new Vector3(-1f, 0, 0), Quaternion.identity) as GameObject;
+                temp.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
+            }
+            StartCoroutine(WaitCD(10));
+        }
+        else if (ID == 2) {
+            int i = Random.Range(0, 9);
+            if (i >= 5) i += 2;
+            AddItem(i);
+            StartCoroutine(WaitCD(15));
+        }
+        else if (ID == 3) {
+            StartCoroutine(SheldMagic());
+            StartCoroutine(WaitCD(30));
+        }
+        else {
+            StartCoroutine(AccelerateMagic());
+            StartCoroutine(WaitCD(20));
         }
     }
 
@@ -274,6 +321,7 @@ public class PlayerController : MonoBehaviour
         _items.RemoveAt(_useId);
         _playerInterfaceManager.UpdatePros();
     }
+
     //Set Keycode
     private void SetKeycode(int userId)
     {
@@ -283,6 +331,7 @@ public class PlayerController : MonoBehaviour
             jump = KeyCode.W;
             props1 = KeyCode.K;
             props2 = KeyCode.L;
+            skill = KeyCode.J;
         }
         else if (userId == 1)
         {
@@ -290,6 +339,7 @@ public class PlayerController : MonoBehaviour
             jump = KeyCode.UpArrow;
             props1 = KeyCode.Keypad2;
             props2 = KeyCode.Keypad3;
+            skill = KeyCode.Keypad1;
         }
     }
 
@@ -320,6 +370,20 @@ public class PlayerController : MonoBehaviour
         this._moveSpeed *= 1.2f;
         yield return new WaitForSeconds(5f);
         this._moveSpeed /= 1.2f;
+    }
+
+    IEnumerator WaitCD(int t) {
+        _isCD = true;
+        this.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<RawImage>().texture = _skill[5];
+        yield return new WaitForSeconds(t);
+        _isCD = false;
+        this.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<RawImage>().texture = _skill[_skill_ID];
+    }
+
+    IEnumerator SheldMagic() {
+        this.tag = "Untagged";
+        yield return new WaitForSeconds(1.0f);
+        this.tag = "Player";
     }
 
     IEnumerator IsStone()

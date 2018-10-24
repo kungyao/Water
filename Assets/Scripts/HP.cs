@@ -9,6 +9,18 @@ public class HP : MonoBehaviour {
     public float _totalHP = 100;
     public float _currentHP = 100;
     private bool _isDied = false;
+    public bool IsDied
+    {
+        get
+        {
+            return _isDied;
+        }
+
+        set
+        {
+            _isDied = value;
+        }
+    }
 
     // Use this for initialization
     void Start () {
@@ -27,6 +39,10 @@ public class HP : MonoBehaviour {
         {
             _isDied = true;
             //Play died animation
+            this.GetComponent<SpriteRenderer>().enabled = false;
+            this.GetComponent<Collider2D>().enabled = false;
+            this.transform.GetChild(0).gameObject.SetActive(false);
+            this.tag = "Untagged";
         }
     }
 

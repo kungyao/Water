@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\PlayerPeople.cs" />
     <Compile Include="Assets\Scripts\PlayerSelect.cs" />
     <Compile Include="Assets\Scripts\Poison.cs" />
+    <Compile Include="Assets\Scripts\RandomProps.cs" />
     <Compile Include="Assets\Scripts\Skill.cs" />
     <Compile Include="Assets\Scripts\Stone.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />

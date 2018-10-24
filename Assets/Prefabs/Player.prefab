@@ -524,14 +524,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _playerUI: {fileID: 223932800694507124}
+  _skill:
+  - {fileID: 2800000, guid: eb465ebf2543bf249b94798442248ae8, type: 3}
+  - {fileID: 2800000, guid: ba650c03ed6215c4989131e8c929768a, type: 3}
+  - {fileID: 2800000, guid: 96bdb44455bc2b243a3e49e578b38bc7, type: 3}
+  - {fileID: 2800000, guid: 5f265fadebfc5994db071c8397fdf91a, type: 3}
+  - {fileID: 2800000, guid: c3f603e2ffc40f94cac1fef202ac85de, type: 3}
+  - {fileID: 2800000, guid: 8218a7ade02bfec4a93ad2d898906e3f, type: 3}
   _fireball: {fileID: 1724124448102248, guid: 1bda30c80a95f2f4b95bf009a408ac13, type: 2}
   _stoneMagic: {fileID: 1671855784462466, guid: 239273f3e0d3ffa42a7913db1a41e201,
     type: 2}
   _poison: {fileID: 1807864405714942, guid: 6b037304de6750245aae5d92864e385a, type: 2}
   _isPoisonous: 0
   _isStone: 0
-  userId: 0
   _playerInterface: {fileID: 1591315494217228}
+  jump: 0
+  props1: 0
+  props2: 0
+  skill: 0
+  moveAxis: 
 --- !u!114 &114732102282607484
 MonoBehaviour:
   m_ObjectHideFlags: 1
